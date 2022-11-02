@@ -129,3 +129,52 @@ for i in range(2):
     ax[i, j].get_yaxis().set_visible(False)
     if test_result[i*5+j] == 1:
       ax[i, j].imshow(test_images[i*5+j],interpolation='nearest')
+
+      url = 'https://github.com/maroonix/202216718/raw/main/sec_image/'
+
+sec_images = []
+
+for i in range(10):
+  file = url + 'img{0:02d}.jpg'.format(i+1)
+  img = imread(file)
+  img = resize(img, (64,64))
+  sec_images.append(img)
+
+plot_images(2,5, sec_images)
+
+sec_hogs = []
+sec_features = []
+
+for i in range(10):
+  hog_desc, hog_image = hog(sec_images[i], orientations=8,
+                            pixels_per_cell=(16, 16), cells_per_block=(1, 1),
+                            visualize=True, multichannel=True)
+  sec_hogs.append(hog_image)
+  sec_features.append(hog_desc)
+
+plot_images(2,5, sec_hogs)
+
+fig = plt.figure()
+fig, ax = plt.subplots(2,5, figsize = (10,4))
+for i in range(2):
+  for j in range(5):
+    ax[i, j].imshow(resize(sec_features[i*5+j], (128,16)))
+    
+sec_features = []
+for i in range(10):
+  hog_desc, hog_image = hog(sec_images[i], orientations=8,
+                            pixels_per_cell=(16, 16), cells_per_block=(1, 1),
+                            visualize=True, multichannel=True)
+  sec_features.append(hog_desc)
+
+sec_result = polynomial_svm_clf.predict(sec_features)
+print(sec_result)
+
+fig = plt.figure()
+fig, ax = plt.subplots(2,5, figsize = (10,4))
+for i in range(2):
+  for j in range(5):
+    ax[i, j].get_xaxis().set_visible(False)
+    ax[i, j].get_yaxis().set_visible(False)
+    if sec_result[i*5+j] == 1:
+      ax[i, j].imshow(sec_images[i*5+j],interpolation='nearest')
