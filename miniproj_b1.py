@@ -130,7 +130,7 @@ for i in range(2):
     if test_result[i*5+j] == 1:
       ax[i, j].imshow(test_images[i*5+j],interpolation='nearest')
 
-      url = 'https://github.com/maroonix/202216718/raw/main/sec_image/'
+url = 'https://github.com/maroonix/202216718/raw/main/sec_image/'
 
 sec_images = []
 
